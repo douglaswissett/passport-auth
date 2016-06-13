@@ -6,4 +6,8 @@ var Account = new Schema({
     ig_id: String
 });
 
+Account.statics.findAll = function (cb) {
+  return this.find({}, cb);
+}
+
 module.exports = mongoose.model('Account', Account);

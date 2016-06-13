@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 
+
+// search location
 var location = {
   lat: 52.5200,
   long: 13.4050
@@ -13,16 +15,16 @@ router.get('/', function(req, res, next) {
     &client_secret=${process.env.FS_SECRET}
     &v=20130815&ll=${location.lat},${location.long}`,
     function (error, response, body) {
+      if (error) throw err;
+
       var parsed = JSON.parse(body);
 
-      parsed.response.groups[0].items.forEach(function(item) {
-        console.log(item.venue.categories[0].name);
-      });
-      res.render('show.jade', {
+
+      res.render('show_suggestions.jade', {
         title: 'Places',
         current_location: parsed.response.headerFullLocation,
         description :'Using Foursquare Venue / Explore API',
-        response: parsed.response.groups[0].items
+        data: parsed.response.groups[0].items
       });
   });
 });
@@ -32,6 +34,8 @@ router.get('/json', function(req, res, next) {
     &client_secret=${process.env.FS_SECRET}
     &v=20130815&ll=${location.lat},${location.long}`,
     function (error, response, body) {
+      if (error) throw error;
+
       res.send(JSON.parse(body));
   });
 })

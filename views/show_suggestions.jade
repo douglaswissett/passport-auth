@@ -7,23 +7,23 @@ block content
     br
 
     ul
-      for item in response
+      for item in data
         li
           div
-            h2= item.venue.name + ' - ' + item.venue.rating + ' Rating'
-            p= item.venue.categories[0].name+' Address: '+item.venue.location.formattedAddress
             ul
-              li= item.reasons.items[0].summary
-              li= 'Checked In: '+ item.venue.stats.checkinsCount
-              li= 'Users count: '+ item.venue.stats.usersCount
+              p ----------------------------------------------------------------------------------------------
+              li= item.venue.name
+              li= item.venue.categories[0].name+' Address: '+item.venue.location.formattedAddress
+              br
+              li= item.reasons.items[0].summary + ' - ' + item.venue.rating + ' Rating'
               if (item.tips[0].likes)
                 li= 'Likes: '+item.tips[0].likes.count
               else
                 li= 'Likes: -'
+              li= 'Checked In: '+ item.venue.stats.checkinsCount
+              li= 'Users count: '+ item.venue.stats.usersCount
               li= item.tips[0].text
-
               br
-
               if (item.venue.price)
                 li= 'Price: '+ item.venue.price.currency + ' ' + item.venue.price.message
               else 
@@ -33,6 +33,7 @@ block content
                 li= item.venue.hours.status
               else
                 li= 'Is Open: N/A'
+              p ----------------------------------------------------------------------------------------------
               br
       else
         li sorry, no place info

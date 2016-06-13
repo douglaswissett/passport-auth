@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  .container
+    h1 #{title}
+    p.lead #{description}
+    br
+
+    ul
+      for user in data
+        li
+          div
+            ul
+              p ------------------------------
+              li= 'user_ID: ' + user.ig_id
+              li= 'username: ' + user.username
+              p ------------------------------
+              br
+      else
+        li No users found

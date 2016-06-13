@@ -11,7 +11,7 @@ var InstagramStrategy = require('passport-instagram').Strategy;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var places = require('./routes/places');
+var suggestions = require('./routes/suggestions');
 var auth = require('./routes/auth');
 
 var app = express();
@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(require('express-session')({
-    secret: 'keyboard cat',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
 }));
@@ -40,8 +40,8 @@ var Account = require('./models/account');
 mongoose.connect('mongodb://localhost/kompas_test');
 
 app.use('/', routes);
-app.use('/users', ensureAuthenticated, users);
-app.use('/places', ensureAuthenticated, places);
+app.use('/api/v1/users', ensureAuthenticated, users);
+app.use('/api/v1/suggestions', ensureAuthenticated, suggestions);
 app.use('/auth', auth);
 
 // Passport-Instagram
@@ -63,6 +63,8 @@ passport.use(new InstagramStrategy({
     process.nextTick(function () {
       console.log(profile);
       Account.count({ig_id: profile.id}, function (err, count){ 
+        if (err) throw err;
+
         if(count>0){
           //document exists });
           return done(null, profile);
@@ -120,7 +122,7 @@ app.use(function(err, req, res, next) {
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
-  res.redirect('/login')
+  res.render('not_authorized.jade', { error: 'Not authorised  |  ' });
 }
 
 module.exports = app;
