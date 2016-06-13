@@ -1,0 +1,126 @@
+require('dotenv').config();
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var passport = require('passport');
+var InstagramStrategy = require('passport-instagram').Strategy;
+
+var routes = require('./routes/index');
+var users = require('./routes/users');
+var places = require('./routes/places');
+var auth = require('./routes/auth');
+
+var app = express();
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(require('express-session')({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Mongo Database Stuff
+var Account = require('./models/account');
+mongoose.connect('mongodb://localhost/kompas_test');
+
+app.use('/', routes);
+app.use('/users', ensureAuthenticated, users);
+app.use('/places', ensureAuthenticated, places);
+app.use('/auth', auth);
+
+// Passport-Instagram
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+passport.use(new InstagramStrategy({
+    clientID: process.env.IG_ID,
+    clientSecret: process.env.IG_SECRET,
+    callbackURL: "http://localhost:3000/auth/instagram/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    // asynchronous verification, for effect...
+    process.nextTick(function () {
+      console.log(profile);
+      Account.count({ig_id: profile.id}, function (err, count){ 
+        if(count>0){
+          //document exists });
+          return done(null, profile);
+        }
+        // create new user record
+        var user = new Account({
+          username: profile.username,
+          ig_id: profile.id
+        });
+        // save user record to MongoDB
+        user.save(function(err) {
+          if (err) throw err;
+        });
+      });
+
+      // To keep the example simple, the user's Instagram profile is returned to
+      // represent the logged-in user.  In a typical application, you would want
+      // to associate the Instagram account with a user record in your database,
+      // and return that user instead.
+      return done(null, profile);
+    });
+  }
+));
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// error handlers
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/login')
+}
+
+module.exports = app;
