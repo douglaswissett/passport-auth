@@ -1,53 +1,25 @@
 var express = require('express');
 var router = express.Router();
-var passport = require('passport');
-var Account = require('../models/account');
 
-
-module.exports = function(passport){
-
-  /* GET home page. */
-  router.get('/', function(req, res, next) {
-    res.render('index', { 
-      title: 'Express',
-      user: req.user
-    });
+/* GET home page. */
+router.get('/', function(req, res) {
+  res.render('index', { 
+    title: 'Express',
+    user: req.user
   });
+});
 
-  router.get('/register', function(req, res) {
-      res.render('register', { });
-  });
+router.get('/register', function(req, res) {
+    res.render('register', { });
+});
 
-  router.post('/register', function(req, res, next) {
-    Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
-      if (err) {
-        return res.render('register', { error : err.message });
-      }
+router.get('/login', function(req, res){
+  res.render('login', { user: req.user });
+});
 
-      passport.authenticate('local')(req, res, function () {
-        req.session.save(function (err) {
-          if (err) {  return next(err);  }
+router.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
 
-          res.redirect('/');
-        });
-      });
-    });
-  });
-
-  router.get('/login', function(req, res){
-    res.render('login', { user: req.user });
-  });
-
-  router.post('/login', passport.authenticate('local'), function(req, res) {
-    res.redirect('/');
-  });
-
-  router.get('/logout', function(req, res){
-    req.logout();
-    res.redirect('/');
-  });
-
-  module.exports = router;
-
-  return router;
-};
+module.exports = router;

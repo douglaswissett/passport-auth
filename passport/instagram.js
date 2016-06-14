@@ -1,5 +1,5 @@
 var InstagramStrategy = require('passport-instagram').Strategy;
-var Account = require('../models/account');
+var User = require('../models/user');
 
 module.exports = function(passport) {
   passport.use(new InstagramStrategy({
@@ -11,7 +11,7 @@ module.exports = function(passport) {
       // asynchronous verification, for effect...
       process.nextTick(function () {
         console.log(profile);
-        Account.count({ig_id: profile.id}, function (err, count){ 
+        User.count({ig_id: profile.id}, function (err, count){ 
           if (err) throw err;
 
           if(count>0){
@@ -19,7 +19,7 @@ module.exports = function(passport) {
             return done(null, profile);
           }
           // create new user record
-          var user = new Account({
+          var user = new User({
             username: profile.username,
             ig_id: profile.id
           });

@@ -1,5 +1,6 @@
 var instagram = require('./instagram');
-var Account = require('../models/account');
+var local = require('./local');
+var User = require('../models/user');
 
 module.exports = function(passport){
 
@@ -13,6 +14,7 @@ module.exports = function(passport){
     done(null, user);
   });
 
-  // Setting up Passport Strategies for Facebook and Twitter
+  // Setting up Passport Strategies for Instagram and Local
   instagram(passport);
+  local(passport);
 }
