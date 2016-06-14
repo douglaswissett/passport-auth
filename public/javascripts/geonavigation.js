@@ -12,7 +12,7 @@ $( document ).ready(function(){
         lat: position.coords.latitude
       },
       success: function() {
-        console.log('AJAX GeoNaviation');
+        console.log('AJAX getLocation');
       }
     });
   }

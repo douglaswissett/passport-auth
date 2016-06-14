@@ -16,19 +16,31 @@ module.exports = function(User, LocationSchema) {
     });
   });
 
+  router.get('/places', function(req, res) {
+
+    // var locationModel     = new LocationSchema(); 
+    // locationModel.name = 'city name'; 
+    // locationModel.geo    = [ 13.122434, 52.123211 ]; 
+    // locationModel.save();
+    
+    User.findOne({ 'username': req.user.username }, function (err, user) {
+      if (err) throw err;
+
+      LocationSchema.find({'geo': {$near: [ user.coordinates[0] , user.coordinates[1] ], $maxDistance: 1000/6371}}, 
+      function(err, locations) {
+        res.render('locations.jade',{ data: locations });
+      });
+    })
+  });
+
   router.post('/getLocation', function(req, res) {
 
-
-    var locationModel     = new LocationSchema(); 
-    locationModel.name = 'city name'; 
-    locationModel.geo    = [ req.body.lng, req.body.lat ]; 
-
-    locationModel.save(function (err) {
-      console.log('saved')
+    // Update Users Location
+    User.update({username: req.user.username},{
+      coordinates: [req.body.lng, req.body.lat]
+    }, function(err) {
+      console.error(err);
     });
-
-    LocationSchema.find({'geo': {$near: [13.41, 52.481],$maxDistance: 1000/6371}}, console.log);
-
   });
 
   return router;
