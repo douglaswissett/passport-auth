@@ -1,6 +1,6 @@
 var express = require('express');
-var passport = require('passport');
 var router = express.Router();
+var passport = require('passport');
 // GET /auth/instagram
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  The first step in Instagram authentication will involve

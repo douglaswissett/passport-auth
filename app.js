@@ -7,9 +7,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var InstagramStrategy = require('passport-instagram').Strategy;
 
-var routes = require('./routes/index');
+var routes = require('./routes/index')(passport);
 var users = require('./routes/users');
 var suggestions = require('./routes/suggestions');
 var auth = require('./routes/auth');
@@ -35,59 +36,24 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Initialize Passport
+var initPassport = require('./passport/init');
+initPassport(passport);
+
 // Mongo Database Stuff
 var Account = require('./models/account');
 mongoose.connect('mongodb://localhost/kompas_test');
 
+// Routes
 app.use('/', routes);
 app.use('/api/v1/users', ensureAuthenticated, users);
 app.use('/api/v1/suggestions', ensureAuthenticated, suggestions);
 app.use('/auth', auth);
 
-// Passport-Instagram
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
+// Passport-Local
+passport.use(new LocalStrategy(Account.authenticate()));
 
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
-});
 
-passport.use(new InstagramStrategy({
-    clientID: process.env.IG_ID,
-    clientSecret: process.env.IG_SECRET,
-    callbackURL: "http://localhost:3000/auth/instagram/callback"
-  },
-  function(accessToken, refreshToken, profile, done) {
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-      console.log(profile);
-      Account.count({ig_id: profile.id}, function (err, count){ 
-        if (err) throw err;
-
-        if(count>0){
-          //document exists });
-          return done(null, profile);
-        }
-        // create new user record
-        var user = new Account({
-          username: profile.username,
-          ig_id: profile.id
-        });
-        // save user record to MongoDB
-        user.save(function(err) {
-          if (err) throw err;
-        });
-      });
-
-      // To keep the example simple, the user's Instagram profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Instagram account with a user record in your database,
-      // and return that user instead.
-      return done(null, profile);
-    });
-  }
-));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -12,8 +12,10 @@ block content
           div
             ul
               p ------------------------------
-              li= 'user_ID: ' + user.ig_id
-              li= 'username: ' + user.username
+              li= 'User_ID: ' + user._id
+              if (user.ig_id)
+                li= 'Instagram_ID: ' + user.ig_id
+              li= 'Username: ' + user.username
               p ------------------------------
               br
       else
