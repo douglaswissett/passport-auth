@@ -1,8 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-var Account = require('../models/account');
-
+var User = require('../models/user');
 
 module.exports = function(passport){
 
@@ -19,7 +18,7 @@ module.exports = function(passport){
   });
 
   router.post('/register', function(req, res, next) {
-    Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
+    User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
       if (err) {
         return res.render('register', { error : err.message });
       }

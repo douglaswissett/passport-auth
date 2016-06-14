@@ -7,9 +7,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var InstagramStrategy = require('passport-instagram').Strategy;
 
+// Route configs
 var routes = require('./routes/index')(passport);
 var users = require('./routes/users');
 var suggestions = require('./routes/suggestions');
@@ -41,18 +40,15 @@ var initPassport = require('./passport/init');
 initPassport(passport);
 
 // Mongo Database Stuff
-var Account = require('./models/account');
-mongoose.connect('mongodb://localhost/kompas_test');
+var dbConfig = require('./db/db');
+var User = require('./models/user');
+mongoose.connect(dbConfig.url);
 
 // Routes
 app.use('/', routes);
 app.use('/api/v1/users', ensureAuthenticated, users);
 app.use('/api/v1/suggestions', ensureAuthenticated, suggestions);
 app.use('/auth', auth);
-
-// Passport-Local
-passport.use(new LocalStrategy(Account.authenticate()));
-
 
 
 // catch 404 and forward to error handler
