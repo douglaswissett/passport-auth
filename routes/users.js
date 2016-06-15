@@ -17,18 +17,13 @@ module.exports = function(User, LocationSchema) {
   });
 
   router.get('/places', function(req, res) {
-
-    // var locationModel     = new LocationSchema(); 
-    // locationModel.name = 'city name'; 
-    // locationModel.geo    = [ 13.122434, 52.123211 ]; 
-    // locationModel.save();
     
     User.findOne({ 'username': req.user.username }, function (err, user) {
       if (err) throw err;
 
       LocationSchema.find({'geo': {$near: [ user.coordinates[0] , user.coordinates[1] ], $maxDistance: 1000/6371}}, 
       function(err, locations) {
-        res.render('locations.jade',{ data: locations });
+        res.render('show_map.jade',{ data: locations, center: { lat: user.coordinates[1] , lng: user.coordinates[0] } });
       });
     })
   });
@@ -40,7 +35,25 @@ module.exports = function(User, LocationSchema) {
       coordinates: [req.body.lng, req.body.lat]
     }, function(err) {
       console.error(err);
+      console.log('updated user coordinates');
     });
+
+    // Save location data
+    var locationModel     = new LocationSchema(); 
+    locationModel.name = 'asdfasfdasf'; 
+    locationModel.geo    = [req.body.lng, req.body.lat];
+    locationModel.save();
+
+    // Get location data
+    User.findOne({ 'username': req.user.username }, function (err, user) {
+      if (err) throw err;
+
+      LocationSchema.find({'geo': {$near: [ user.coordinates[0] , user.coordinates[1] ], $maxDistance: 1000/6371}}, 
+      function(err, locations) {
+        res.json(locations);
+      });
+    })
+
   });
 
   return router;
