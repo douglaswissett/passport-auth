@@ -5,7 +5,6 @@ var Db_dump = require('../models/db_dump');
 module.exports = function(User, LocationSchema) {
   /* GET users listing. */
   router.get('/', function(req, res) {
-
     User.findAll(function(err, users){
       res.render('show_users.jade', { data: users, title: 'Users', description: 'kompas_test userbase' });
     });
@@ -21,9 +20,9 @@ module.exports = function(User, LocationSchema) {
     
     User.findOne({ 'username': req.user.username }, function (err, user) {
       if (err) throw err;
-
       LocationSchema.find({'geo': {$near: [ user.coordinates[0] , user.coordinates[1] ], $maxDistance: 1000/6371}}, 
       function(err, locations) {
+        console.log('locations: ', locations);
         res.render('show_map.jade',{ data: locations, center: { lat: user.coordinates[1] , lng: user.coordinates[0] } });
       });
     })
@@ -35,14 +34,13 @@ module.exports = function(User, LocationSchema) {
     User.update({username: req.user.username},{
       coordinates: [req.body.lng, req.body.lat]
     }, function(err) {
-      console.error(err);
+      console.log(err);
     });
 
 
     // convert dump data into geoindexable data
     Db_dump.find({},function(err, venues){
       venues.forEach(function(venue) {
-        console.log(venue.name);
         // Save location data
         var locationModel     = new LocationSchema(); 
         locationModel.name = venue.name;
