@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var Db_dump = require('../models/db_dump');
 
 module.exports = function(User, LocationSchema) {
   /* GET users listing. */
@@ -35,15 +36,30 @@ module.exports = function(User, LocationSchema) {
       coordinates: [req.body.lng, req.body.lat]
     }, function(err) {
       console.error(err);
-      console.log('updated user coordinates');
     });
 
-    // Save location data
-    var locationModel     = new LocationSchema(); 
-    locationModel.name = 'asdfasfdasf'; 
-    locationModel.geo    = [req.body.lng, req.body.lat];
-    locationModel.save();
 
+    // convert dump data into geoindexable data
+    Db_dump.find({},function(err, venues){
+      venues.forEach(function(venue) {
+        console.log(venue.name);
+        // Save location data
+        var locationModel     = new LocationSchema(); 
+        locationModel.name = venue.name;
+        locationModel.location = venue.location;
+        locationModel.city = venue.city;
+        locationModel.geo    = [venue.longitude, venue.latitude];
+        locationModel.latitude = venue.latitude;
+        locationModel.longitude = venue.longitude;
+        locationModel.related_ids = venue.related_ids;
+        locationModel.description = venue.description;
+        locationModel.meta_tags = venue.meta_tags;
+        locationModel.photo_link = venue.photo_link;
+        locationModel.save();
+      });
+    });
+
+    
     // Get location data
     User.findOne({ 'username': req.user.username }, function (err, user) {
       if (err) throw err;
@@ -53,7 +69,6 @@ module.exports = function(User, LocationSchema) {
         res.json(locations);
       });
     })
-
   });
 
   return router;
