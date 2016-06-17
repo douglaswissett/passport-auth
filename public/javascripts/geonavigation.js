@@ -1,5 +1,7 @@
 $( document ).ready(function(){
-  console.log('GeoNaviation loaded');
+
+  // Google map
+  var map;
 
   function geo_success(position) {
     console.log( position.coords);
@@ -10,11 +12,33 @@ $( document ).ready(function(){
       data: { 
         lng: position.coords.longitude,
         lat: position.coords.latitude
-      },
-      success: function() {
-        console.log('AJAX getLocation');
       }
+    })
+    .done(function(data) {
+
+      data.forEach(function(location) {
+
+        var marker = new google.maps.Marker({
+          position: {lat: location.geo[1], lng: location.geo[0]},
+          map: map
+        });
+
+      })
+    })
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: position.coords.latitude, lng: position.coords.longitude},
+        zoom: 8
+      });
+    }
+    initMap();
+
+    var marker = new google.maps.Marker({
+      position: {lat: position.coords.latitude, lng: position.coords.longitude},
+      map: map
     });
+
   }
 
   function geo_error() {
