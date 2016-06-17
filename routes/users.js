@@ -44,28 +44,5 @@ module.exports = function(User, LocationSchema) {
     })
   });
 
-  // convert dump data into geoindexable data
-  router.get('/dump', function(req ,res) {
-    Db_dump.find({},function(err, places){
-      places.forEach(function(place) {
-        // Save location data
-        var locationModel     = new LocationSchema(); 
-        locationModel.name = place.name;
-        locationModel.location = place.location;
-        locationModel.city = place.city;
-        locationModel.geo    = [place.longitude, place.latitude];
-        locationModel.latitude = place.latitude;
-        locationModel.longitude = place.longitude;
-        locationModel.related_ids = place.related_ids;
-        locationModel.description = place.description;
-        locationModel.meta_tags = place.meta_tags;
-        locationModel.photo_link = place.photo_link;
-        locationModel.save();
-      });
-    });
-    var html = '<html>Dump data seeded, <a href="/">go back</a></html>'
-    res.send(html);
-  });
-
   return router;
 };

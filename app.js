@@ -41,7 +41,7 @@ var LocationSchema = require('./models/location_schema');
 mongoose.connect(dbConfig.url);
 
 // Route configs
-var routes = require('./routes/index');
+var routes = require('./routes/index')(LocationSchema, ensureAuthenticated);
 var users = require('./routes/users')(User, LocationSchema);
 var suggestions = require('./routes/suggestions')(request);
 var auth = require('./routes/auth')(passport, User);
