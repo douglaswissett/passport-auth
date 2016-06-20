@@ -15,7 +15,7 @@ module.exports = function(User, LocationSchema) {
       res.json(users);
     });
   });
-  // render map template
+  // render google map
   router.get('/map', function(req, res) {
     res.render('show_map.jade', { user: req.user });
   });
