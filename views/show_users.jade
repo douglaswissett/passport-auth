@@ -6,17 +6,17 @@ block content
     p.lead #{description}
     br
 
-    ul
-      for user in data
-        li
-          div
-            ul
-              p ------------------------------
-              li= 'User_ID: ' + user._id
-              if (user.ig_id)
-                li= 'Instagram_ID: ' + user.ig_id
-              li= 'Username: ' + user.username
-              p ------------------------------
-              br
-      else
-        li No users found
+    table
+      thead
+        tr 
+          th _id
+          th username
+      tbody
+        each user in data
+          tr
+            td 
+              a(href='/api/v1/users/' + user.username) #{user.id}
+            td 
+              a(href='/api/v1/users/' + user.username) #{user.username}
+        else
+          h2 No users found

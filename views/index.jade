@@ -9,11 +9,6 @@ block content
     a(href="/register") Sign up
     br
   if (user)
-    p You are currently logged in as #{user.username} 
-      a(href="/logout") Logout
+    a(href="/api/v1/users") Users
     br
-    a(href="/api/v1/suggestions") Suggestion near you
-    br
-    a(href="/api/v1/users") Other users
-    br
-    a(href="/api/v1/users/places") Places near you
+    a(href="/api/v1/users/map") Nearby Map

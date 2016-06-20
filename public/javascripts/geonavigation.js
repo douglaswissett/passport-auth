@@ -15,21 +15,20 @@ $( document ).ready(function(){
       }
     })
     .done(function(data) {
-
       data.forEach(function(location) {
 
         var marker = new google.maps.Marker({
           position: {lat: location.geo[1], lng: location.geo[0]},
           map: map
         });
-
+        attachMarkerMessage(marker, location.name);
       })
     })
 
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: position.coords.latitude, lng: position.coords.longitude},
-        zoom: 8
+        zoom: 14
       });
     }
     initMap();
@@ -37,6 +36,19 @@ $( document ).ready(function(){
     var marker = new google.maps.Marker({
       position: {lat: position.coords.latitude, lng: position.coords.longitude},
       map: map
+    });
+
+  }
+
+  // Attaches an info window to a marker with the provided message. When the
+  // marker is clicked, the info window will open with the secret message.
+  function attachMarkerMessage(marker, placeName) {
+    var infowindow = new google.maps.InfoWindow({
+      content: placeName
+    });
+
+    marker.addListener('click', function() {
+      infowindow.open(marker.get('map'), marker);
     });
 
   }
