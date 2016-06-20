@@ -4,13 +4,8 @@ var passportLocalMongoose = require('passport-local-mongoose');
 
 var User = new Schema({
   username: String,
-  ig_id: String,
-  coordinates: [Number]
+  ig_id: String
 });
-
-User.statics.findAll = function (cb) {
-  return this.find({}, cb);
-}
 
 User.plugin(passportLocalMongoose);
 
