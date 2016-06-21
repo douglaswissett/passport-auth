@@ -5,6 +5,9 @@ var LocationSchema = require('./location_schema');
 var Db_dump = new Schema({
   name: String,
   location: String,
+  category: String,
+  sub_category: String,
+  foursquare_id: String,
   city: String,
   latitude: Number,
   longitude: Number,
@@ -18,6 +21,7 @@ Db_dump.statics.importData = function () {
   this.find({},function(err, places){
     if (err) throw err;
     places.forEach(function(place) {
+      console.log('TEST PLACE: ', place.category);
       // Save location data
       var locationModel     = new LocationSchema(); 
       locationModel.name = place.name;

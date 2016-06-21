@@ -8,6 +8,7 @@ var bodyParser      = require('body-parser');
 var request         = require('request');
 var mongoose        = require('mongoose');
 var passport        = require('passport');
+var flash           = require('connect-flash');
 var $ = require("jquery");
 var app = express();
 
@@ -28,6 +29,7 @@ app.use(require('express-session')({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Initialize Passport

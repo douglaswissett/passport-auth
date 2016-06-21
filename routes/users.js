@@ -28,7 +28,7 @@ module.exports = function(User, LocationSchema) {
   });
   // display user profile
   router.get('/:username', function(req, res) {
-    User.findOne({ username : req.params.username }, function(err, user){
+    User.findOne({ 'username' : req.params.username }, function(err, user){
       if (err) throw err;
       res.render('show_profile.jade', { username: user.username, user: req.user });
     });

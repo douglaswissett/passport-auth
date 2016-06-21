@@ -1,5 +1,6 @@
 var instagram = require('./instagram');
 var local = require('./local');
+var localLogin = require('./local-login');
 var User = require('../models/user');
 
 module.exports = function(passport){
@@ -15,4 +16,5 @@ module.exports = function(passport){
   // Setting up Passport Strategies for Instagram and Local
   instagram(passport);
   local(passport);
+  localLogin(passport);
 }

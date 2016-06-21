@@ -18,10 +18,9 @@ module.exports = function(passport) {
             return done(null, profile);
           }
           // create new user record
-          var user = new User({
-            username: profile.username,
-            ig_id: profile.id
-          });
+          var user = new User();
+          user.username = profile.username;
+          user.instagram_id = profile.id;
           // save user record to MongoDB
           user.save(function(err) {
             if (err) throw err;
