@@ -28,7 +28,7 @@ module.exports = function(passport, User) {
 
   // /auth/login for Local user authentication and storage
   router.post('/register', function(req, res, next) {
-    User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
+    User.register(new User({ username : req.body.username, password: req.body.password }), req.body.password, function(err, user) {
       if (err) {
         return res.render('register', { error : err.message });
       }
@@ -43,9 +43,23 @@ module.exports = function(passport, User) {
     });
   });
 
-  router.post('/login', passport.authenticate('local'), function(req, res) {
-    res.redirect('/');
+  router.post('/login', function(req, res, next ){
+      passport.authenticate('local', function(err, user, info) {
+        if (err) { return next(err) }
+        if (!user) { return res.render('login', { message: info.message }) }
+        res.redirect('/');
+      })(req, res, next);
   });
+
+
+
+  // router.post('/login', 
+  //   passport.authenticate('local', { successRedirect: '/',
+  //                                   failureRedirect: '/login',
+  //                                   message: info.message})
+
+  //   // res.redirect('/');
+  // );
 
   return router;
 };

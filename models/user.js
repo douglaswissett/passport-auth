@@ -4,8 +4,14 @@ var passportLocalMongoose = require('passport-local-mongoose');
 
 var User = new Schema({
   username: String,
+  password: String,
   ig_id: String
 });
+
+User.methods.validPassword = function( pwd ) {
+    // EXAMPLE CODE!
+    return ( this.password === pwd );
+};
 
 User.plugin(passportLocalMongoose);
 
