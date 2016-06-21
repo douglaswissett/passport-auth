@@ -51,15 +51,5 @@ module.exports = function(passport, User) {
       })(req, res, next);
   });
 
-
-
-  // router.post('/login', 
-  //   passport.authenticate('local', { successRedirect: '/',
-  //                                   failureRedirect: '/login',
-  //                                   message: info.message})
-
-  //   // res.redirect('/');
-  // );
-
   return router;
 };

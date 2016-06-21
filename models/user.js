@@ -9,7 +9,6 @@ var User = new Schema({
 });
 
 User.methods.validPassword = function( pwd ) {
-    // EXAMPLE CODE!
     return ( this.password === pwd );
 };
 
