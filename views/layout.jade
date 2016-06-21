@@ -8,15 +8,5 @@ html
 
     block head
   body
-    if (!user)
-      p not logged in
-    else
-      nav
-        a(href="/") Home
-        br
-        a(href="/api/v1/users/" + user.username) #{user.username}
-        br
-        a(href="/logout") Logout
-        br
-        br
+
     block content

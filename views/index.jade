@@ -1,14 +1,25 @@
 extends layout
 
 block content
+  if (!user)
+    p not logged in
+  else
+    nav
+      a(href="/") Home
+      br
+      a(href="/api/v1/users/" + user.username) #{user.username}
+      br
+      a(href="/logout") Logout
+      br
+      br
   h1= title
-  p Welcome to #{title}
   if (!user)
     a(href="/login") Login
     br
     a(href="/register") Sign up
     br
   if (user)
+    p Welcome #{user.username}
     a(href="/api/v1/users") Users
     br
     a(href="/api/v1/users/map") Nearby Map
