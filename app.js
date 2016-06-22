@@ -1,4 +1,5 @@
 require('dotenv').config();
+'use strict'
 var express         = require('express');
 var path            = require('path');
 var favicon         = require('serve-favicon');
@@ -32,6 +33,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+
+
+
 
 // Initialize Passport
 var initPassport = require('./passport/init');
