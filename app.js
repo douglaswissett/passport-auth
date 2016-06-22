@@ -8,7 +8,7 @@ var bodyParser      = require('body-parser');
 var request         = require('request');
 var mongoose        = require('mongoose');
 var passport        = require('passport');
-var $ = require("jquery");
+// var $ = require("jquery");
 var app = express();
 
 // view engine setup
