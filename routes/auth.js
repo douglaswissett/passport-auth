@@ -26,30 +26,18 @@ module.exports = function(passport, User) {
       res.redirect('/');
   });
 
-  // /auth/login for Local user authentication and storage
-  router.post('/register', function(req, res, next) {
-    User.register(new User({ username : req.body.username, password: req.body.password }), req.body.password, function(err, user) {
-      if (err) {
-        return res.render('register', { error : err.message });
-      }
+  router.post('/register', passport.authenticate('local', {
+    successRedirect : '/', // redirect to the secure profile section
+    failureRedirect : '/register', // redirect back to the signup page if there is an error
+    failureFlash : true // allow flash messages
+  }));
 
-      passport.authenticate('local')(req, res, function () {
-        req.session.save(function (err) {
-          if (err) {  return next(err);  }
 
-          res.redirect('/');
-        });
-      });
-    });
-  });
-
-  router.post('/login', function(req, res, next ){
-      passport.authenticate('local', function(err, user, info) {
-        if (err) { return next(err) }
-        if (!user) { return res.render('login', { message: info.message }) }
-        res.redirect('/');
-      })(req, res, next);
-  });
+  router.post('/login', passport.authenticate('local-login', {
+      successRedirect : '/', // redirect to the secure profile section
+      failureRedirect : '/login', // redirect back to the signup page if there is an error
+      failureFlash : true // allow flash messages
+  }));
 
   return router;
 };

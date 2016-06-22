@@ -5,18 +5,24 @@ var Db_dump = require('../models/db_dump');
 module.exports = function(LocationSchema, ensureAuthenticated) {
   /* GET home page. */
   router.get('/', function(req, res) {
+
+    console.log('TEST USER: ', req.user);
+
     res.render('index', { 
-      title: 'KOMPAS Server',
+      title: 'KOMPAS',
       user: req.user
     });
   });
 
   router.get('/register', function(req, res) {
-      res.render('register', { });
+      res.render('register', { message: req.flash('signupMessage') });
   });
 
   router.get('/login', function(req, res){
-    res.render('login', { user: req.user });
+    res.render('login', { 
+      user: req.user,
+      message: req.flash('loginMessage')
+    });
   });
 
   router.get('/logout', function(req, res){

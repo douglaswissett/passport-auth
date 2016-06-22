@@ -1,14 +1,24 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  if (!user)
-    a(href="/login") Login
-    br
-    a(href="/register") Sign up
-    br
-  if (user)
-    a(href="/api/v1/users") Users
-    br
-    a(href="/api/v1/users/map") Nearby Map
+  .container
+    .row
+      .col-md-12.text-center
+        if (!user)
+          h1= title
+          br
+          br
+          a(href="/register").btn.btn-primary.btn-lg Join Now
+          br
+          br
+          br
+          br
+          a(href="/login").btn.btn-default Sign In
+        
+        if (user)
+          p.lead Welcome #{user.username}
+          a(href="/api/v1/users") 
+            button.btn.btn-default Users
+          br
+          a(href="/api/v1/users/map") 
+            button.btn.btn-default Interests / Places
