@@ -2,6 +2,10 @@
   "name": "kompas_v1",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "6.2.1",
+    "npm": "3.9.3"
+  },
   "scripts": {
     "start": "nodemon ./bin/www"
   },

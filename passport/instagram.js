@@ -1,6 +1,7 @@
 var InstagramStrategy = require('passport-instagram').Strategy;
 var User = require('../models/user');
 
+
 module.exports = function(passport) {
   passport.use(new InstagramStrategy({
       clientID: process.env.IG_ID,
