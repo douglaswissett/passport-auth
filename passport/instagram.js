@@ -10,7 +10,7 @@ module.exports = function(passport) {
     function(accessToken, refreshToken, profile, done) {
       // asynchronous verification, for effect...
       process.nextTick(function () {
-        User.count({ig_id: profile.id}, function (err, count){ 
+        User.count({instagram_id: profile.id}, function (err, count){ 
           if (err) throw err;
 
           if(count>0){
@@ -20,19 +20,19 @@ module.exports = function(passport) {
           // create new user record
           var user = new User({
             username: profile.username,
-            ig_id: profile.id
+            instagram_id: profile.id
           });
           // save user record to MongoDB
           user.save(function(err) {
             if (err) throw err;
+
+            return done(null, profile);
           });
         });
-
         // To keep the example simple, the user's Instagram profile is returned to
         // represent the logged-in user.  In a typical application, you would want
         // to associate the Instagram account with a user record in your database,
         // and return that user instead.
-        return done(null, profile);
       });
     }
   ));

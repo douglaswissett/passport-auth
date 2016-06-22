@@ -22,6 +22,13 @@ $( document ).ready(function(){
           map: map
         });
         attachMarkerMessage(marker, location.name);
+
+        console.log(location);
+        var content = $(`<a href="">${location.name}</a>`)
+        var div = $('<div>').append(content)
+        var li = $('<li>').append(div)
+
+        $('.places-ul').append(li)
       })
     })
 
