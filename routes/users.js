@@ -23,7 +23,6 @@ module.exports = function(User, LocationSchema) {
   router.post('/getLocation', function(req, res) {
     LocationSchema.getNearbyPlaces([ req.body.lng , req.body.lat ], function(err, locations) {
       if (err) console.error(err.message);
-      console.log('TEST LOCATIONS: ', locations );
       res.json(locations);
     });
   });
