@@ -22,7 +22,7 @@ module.exports = function(User, LocationSchema) {
   // Get nearby places from location
   router.post('/getLocation', function(req, res) {
     LocationSchema.getNearbyPlaces([ req.body.lng , req.body.lat ], function(err, locations) {
-      if (err) throw err;
+      if (err) console.error(err.message);
       res.json(locations);
     });
   });

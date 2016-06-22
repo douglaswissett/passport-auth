@@ -9,8 +9,10 @@ var request         = require('request');
 var mongoose        = require('mongoose');
 var passport        = require('passport');
 var flash           = require('connect-flash');
-var $ = require("jquery");
+// var $ = require("jquery");
+
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,6 +33,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
+// app.use('/js', express.static(path.join(__dirname + '/node_modules/bootstrap/dist/js'))); // redirect bootstrap JS
+// app.use('/js', express.static(path.join(__dirname + '/node_modules/jquery/dist'))); // redirect JS jQuery
+// app.use('/css', express.static(path.join(__dirname + '/node_modules/bootstrap/dist/css')));
+
 
 // Initialize Passport
 var initPassport = require('./passport/init');

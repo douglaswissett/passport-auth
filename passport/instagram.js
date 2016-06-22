@@ -10,7 +10,7 @@ module.exports = function(passport) {
     function(accessToken, refreshToken, profile, done) {
       // asynchronous verification, for effect...
       process.nextTick(function () {
-        User.count({ig_id: profile.id}, function (err, count){ 
+        User.count({instagram_id: profile.id}, function (err, count){ 
           if (err) throw err;
 
           if(count>0){

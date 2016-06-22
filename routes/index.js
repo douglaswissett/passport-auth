@@ -9,7 +9,7 @@ module.exports = function(LocationSchema, ensureAuthenticated) {
     console.log('TEST USER: ', req.user);
 
     res.render('index', { 
-      title: 'KOMPAS Server',
+      title: 'KOMPAS',
       user: req.user
     });
   });
