@@ -10,7 +10,6 @@ module.exports = function(passport, User) {
   router.get('/instagram',
     passport.authenticate('instagram'),
     function(req, res){
-      console.log('TEST: /auth/instagram');
       // The request will be redirected to Instagram for authentication, so this
       // function will not be called.
   });

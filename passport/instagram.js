@@ -25,14 +25,14 @@ module.exports = function(passport) {
           // save user record to MongoDB
           user.save(function(err) {
             if (err) throw err;
+
+            return done(null, profile);
           });
         });
-
         // To keep the example simple, the user's Instagram profile is returned to
         // represent the logged-in user.  In a typical application, you would want
         // to associate the Instagram account with a user record in your database,
         // and return that user instead.
-        return done(null, profile);
       });
     }
   ));
