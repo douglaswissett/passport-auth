@@ -27,6 +27,7 @@ module.exports = function(User, LocationSchema) {
   // update user location coordinates
   router.post('/getLocation', function(req, res) {
     User.updateLocation(req.user.username, [ req.body.lng, req.body.lat ]);
+    res.status(200);
   });
   // display user profile
   router.get('/:username', function(req, res) {

@@ -1,4 +1,5 @@
 require('dotenv').config();
+pry = require('pryjs')
 'use strict'
 var express         = require('express');
 var path            = require('path');

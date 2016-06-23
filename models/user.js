@@ -34,7 +34,6 @@ userSchema.methods.validPassword = function(password) {
 userSchema.statics.updateLocation = function( username , coordinates) {
   this.update({ username: username }, { geo: coordinates }, function(err) {
     if (err) throw err;
-    console.log('updated user location');
   })
 }
 

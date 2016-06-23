@@ -13,6 +13,7 @@ module.exports = function(User, LocationSchema) {
   // get nearby locations based on user location
   router.get('/nearby', function(req, res) {
     User.findOne({username: req.user.username}, function(err, user) {
+
       LocationSchema.getNearbyPlaces( user.geo , function(err, locations) {
         if (err) throw err;
         res.json(locations);
