@@ -16,6 +16,10 @@ block content
         tr 
           th _id
           th username
+          th email
+          th first name
+          th last name
+          th Profile
       tbody
         each user in data
           tr
@@ -23,5 +27,13 @@ block content
               a(href='/api/v1/users/' + user.username) #{user.id}
             td 
               a(href='/api/v1/users/' + user.username) #{user.username}
+            td 
+              a(href='/api/v1/users/' + user.username) #{user.email}
+            td 
+              a(href='/api/v1/users/' + user.username) #{user.first_name}
+            td 
+              a(href='/api/v1/users/' + user.username) #{user.last_name}
+            td
+              img(src="#{user.profile_picture}", alt="profile-picture")
         else
           h2 No users found

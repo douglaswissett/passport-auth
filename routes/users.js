@@ -17,20 +17,22 @@ module.exports = function(User, LocationSchema) {
   });
   // render google map
   router.get('/map', function(req, res) {
-    res.render('show_map.jade', { user: req.user });
+    User.findOne({username: req.user.username}, function(err, user) {
+      LocationSchema.getNearbyPlaces( user.geo , function(err, locations) {
+        if (err) throw err;
+        res.render('show_map.jade', { user: req.user, locations: locations });
+      })
+    })
   });
-  // Get nearby places from location
+  // update user location coordinates
   router.post('/getLocation', function(req, res) {
-    LocationSchema.getNearbyPlaces([ req.body.lng , req.body.lat ], function(err, locations) {
-      if (err) console.error(err.message);
-      res.json(locations);
-    });
+    User.updateLocation(req.user.username, [ req.body.lng, req.body.lat ]);
   });
   // display user profile
   router.get('/:username', function(req, res) {
     User.findOne({ 'username' : req.params.username }, function(err, user){
       if (err) throw err;
-      res.render('show_profile.jade', { username: user.username, user: req.user });
+      res.render('show_profile.jade', { profile: user, user: req.user });
     });
   });
 

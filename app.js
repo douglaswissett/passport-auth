@@ -52,13 +52,15 @@ mongoose.connect(dbConfig.url);
 // Route configs
 var routes = require('./routes/index')(LocationSchema, ensureAuthenticated);
 var users = require('./routes/users')(User, LocationSchema);
-var suggestions = require('./routes/suggestions')(request);
+var locations = require('./routes/locations')(User, LocationSchema);
+var interests = require('./routes/interests')(User, LocationSchema);
 var auth = require('./routes/auth')(passport, User);
 
 // Routes
 app.use('/', routes);
 app.use('/api/v1/users', ensureAuthenticated, users);
-app.use('/api/v1/suggestions', ensureAuthenticated, suggestions);
+app.use('/api/v1/locations', ensureAuthenticated, locations);
+app.use('/api/v1/interests', ensureAuthenticated, interests);
 app.use('/auth', auth);
 
 

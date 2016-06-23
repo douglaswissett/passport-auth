@@ -13,6 +13,9 @@ block content
         div#map
       .col-md-6
         ul.places-ul
+          each location in locations
+            li 
+              a(href="/api/v1/locations/" + location._id) #{location.name}
 
       
   script(src='/javascripts/geonavigation.js')

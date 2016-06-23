@@ -10,6 +10,10 @@ $( document ).ready(function(){
         lat: position.coords.latitude
       }
     })
+    
+    $.ajax({
+      url: '/api/v1/locations/nearby',
+    })
     .done(function(data) {
       data.forEach(function(location) {
         var marker = new google.maps.Marker({
@@ -18,13 +22,9 @@ $( document ).ready(function(){
         });
         // seperate code into views
         attachMarkerMessage(marker, location.name);
-        var content = $(`<a href="">${location.name}</a>`)
-        var div = $('<div>').append(content)
-        var li = $('<li>').append(div)
-        $('.places-ul').append(li)
-      })
+      })      
     })
-
+    
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: position.coords.latitude, lng: position.coords.longitude},
