@@ -6,7 +6,10 @@ block content
       height: 400px;
       width: 400px;;
     }
-    
+  
+  each location in locations
+    input(type="hidden" class="locations" value="#{location.name}|#{location.geo}")
+
   .container
     .row
       .col-md-6

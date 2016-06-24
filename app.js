@@ -48,20 +48,25 @@ initPassport(passport);
 var dbConfig = require('./db/db');
 var User = require('./models/user');
 var LocationSchema = require('./models/location_schema');
+var Categories = require('./models/categories_schema');
+var Db_dump = require('./models/db_dump');
 mongoose.connect(dbConfig.url);
+
+// Import csv data into mongo collections, first run seed in terminal
+// Db_dump.importData();
 
 // Route configs
 var routes = require('./routes/index')(LocationSchema, ensureAuthenticated);
 var users = require('./routes/users')(User, LocationSchema);
 var locations = require('./routes/locations')(User, LocationSchema);
-var interests = require('./routes/interests')(User, LocationSchema);
+var categories = require('./routes/categories')(Categories, LocationSchema);
 var auth = require('./routes/auth')(passport, User);
 
 // Routes
 app.use('/', routes);
 app.use('/api/v1/users', ensureAuthenticated, users);
 app.use('/api/v1/locations', ensureAuthenticated, locations);
-app.use('/api/v1/interests', ensureAuthenticated, interests);
+app.use('/api/v1/categories', ensureAuthenticated, categories);
 app.use('/auth', auth);
 
 
