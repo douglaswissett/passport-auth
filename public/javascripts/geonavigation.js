@@ -11,21 +11,6 @@ $( document ).ready(function(){
         lat: position.coords.latitude
       }
     });
-
-    // $.ajax({
-    //   url: '/api/v1/locations/nearby',
-    // })
-    // .done(function(data) {
-    //   data.forEach(function(location) {
-    //     var marker = new google.maps.Marker({
-    //       position: {lat: location.geo[1], lng: location.geo[0]},
-    //       map: map
-    //     });
-    //     attachMarkerMessage(marker, location.name);
-    //   })      
-    // })
-
-
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: position.coords.latitude, lng: position.coords.longitude},
@@ -39,14 +24,12 @@ $( document ).ready(function(){
     initMap();
     var location_data = [];
     $('.locations').each(function(i ,val) { 
-      var data = val.value.split('|');
-      
+      var data = val.value.split('|');      
       location_data.push({
         name: data[0],
         geo: data[1].split(',')
       })
     })
-
     location_data.forEach(function(location) {
       var marker = new google.maps.Marker({
         position: {lat: +(location.geo[1]), lng: +(location.geo[0])},
@@ -55,7 +38,6 @@ $( document ).ready(function(){
       attachMarkerMessage(marker, location.name)
     })
   }
-
   function attachMarkerMessage(marker, placeName) {
     var infowindow = new google.maps.InfoWindow({
       content: placeName

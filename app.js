@@ -37,9 +37,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-
-
-
 // Initialize Passport
 var initPassport = require('./passport/init');
 initPassport(passport);
