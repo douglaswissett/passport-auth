@@ -5,8 +5,19 @@ var bcrypt   = require('bcrypt-nodejs');
 
 var userSchema = new Schema({
   username     : String,
+  first_name   : String,
+  last_name    : String,
+  email        : String,
   password     : String,
-  instagram_id : String
+  bio          : String,
+  location     : String,
+  visits       : [],
+  instagram_id : String,
+  profile_picture : String,
+  geo: {
+    type: [Number],
+    index: '2d'
+  },
 });
 
 // methods ======================
@@ -19,6 +30,13 @@ userSchema.methods.generateHash = function(password) {
 userSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.password);
 };
+
+userSchema.statics.updateLocation = function( username , coordinates) {
+  this.update({ username: username }, { geo: coordinates }, function(err) {
+    if (err) throw err;
+  })
+}
+
 
 // userSchema.plugin(passportLocalMongoose);
 

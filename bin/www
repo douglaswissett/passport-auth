@@ -7,6 +7,12 @@
 var app = require('../app');
 var debug = require('debug')('kompas_v1:server');
 var http = require('http');
+// var fs = require('fs'),
+// https = require('https')
+// var privateKey  = fs.readFileSync('key.pem');
+// var certificate = fs.readFileSync('cert.pem', 'utf8');
+// var credentials = {key: privateKey, cert: certificate};
+
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +26,10 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+// var httpServer = http.createServer(app);
+// var httpsServer = https.createServer(credentials, app);
+// httpServer.listen(3000);
+// httpsServer.listen(3001);
 
 /**
  * Listen on provided port, on all network interfaces.

@@ -1,4 +1,6 @@
 require('dotenv').config();
+pry = require('pryjs')
+'use strict'
 var express         = require('express');
 var path            = require('path');
 var favicon         = require('serve-favicon');
@@ -9,7 +11,6 @@ var request         = require('request');
 var mongoose        = require('mongoose');
 var passport        = require('passport');
 var flash           = require('connect-flash');
-// var $ = require("jquery");
 
 var app = express();
 
@@ -33,9 +34,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use('/js', express.static(path.join(__dirname + '/node_modules/bootstrap/dist/js'))); // redirect bootstrap JS
-// app.use('/js', express.static(path.join(__dirname + '/node_modules/jquery/dist'))); // redirect JS jQuery
-// app.use('/css', express.static(path.join(__dirname + '/node_modules/bootstrap/dist/css')));
+
 
 
 // Initialize Passport
@@ -46,18 +45,25 @@ initPassport(passport);
 var dbConfig = require('./db/db');
 var User = require('./models/user');
 var LocationSchema = require('./models/location_schema');
+var Categories = require('./models/categories_schema');
+var Db_dump = require('./models/db_dump');
 mongoose.connect(dbConfig.url);
+
+// Import csv data into mongo collections, first run seed in terminal
+// Db_dump.importData();
 
 // Route configs
 var routes = require('./routes/index')(LocationSchema, ensureAuthenticated);
 var users = require('./routes/users')(User, LocationSchema);
-var suggestions = require('./routes/suggestions')(request);
+var locations = require('./routes/locations')(User, LocationSchema);
+var categories = require('./routes/categories')(Categories, LocationSchema);
 var auth = require('./routes/auth')(passport, User);
 
 // Routes
 app.use('/', routes);
 app.use('/api/v1/users', ensureAuthenticated, users);
-app.use('/api/v1/suggestions', ensureAuthenticated, suggestions);
+app.use('/api/v1/locations', ensureAuthenticated, locations);
+app.use('/api/v1/categories', ensureAuthenticated, categories);
 app.use('/auth', auth);
 
 

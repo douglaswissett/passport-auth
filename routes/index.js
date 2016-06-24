@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var Db_dump = require('../models/db_dump');
 
 module.exports = function(LocationSchema, ensureAuthenticated) {
   router.get('/', function(req, res) {
@@ -21,11 +20,6 @@ module.exports = function(LocationSchema, ensureAuthenticated) {
   router.get('/logout', function(req, res){
     req.logout();
     res.redirect('/');
-  });
-  router.get('/data/dump', ensureAuthenticated, function(req, res) {
-    Db_dump.importData(); // import csv location data
-    var html = '<html>Dump data seeded, <a href="/">go back</a></html>'
-    res.send(html);
   });
 
   return router;

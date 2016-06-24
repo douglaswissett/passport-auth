@@ -18,15 +18,21 @@ module.exports = function(passport) {
             //document exists });
             return done(null, profile);
           }
+
+          var full_name = profile._json.data.full_name.split(' ');
           // create new user record
           var user = new User({
             username: profile.username,
-            instagram_id: profile.id
+            email : profile.username,
+            first_name : full_name[0],
+            last_name : full_name[1],
+            instagram_id: profile.id,
+            bio  : profile._json.data.bio,
+            profile_picture: profile._json.data.profile_picture
           });
           // save user record to MongoDB
-          user.save(function(err) {
+          user.save(function(err, user) {
             if (err) throw err;
-
             return done(null, profile);
           });
         });
